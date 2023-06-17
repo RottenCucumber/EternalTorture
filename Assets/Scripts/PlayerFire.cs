@@ -5,10 +5,8 @@ using UnityEngine;
 public class PlayerFire : MonoBehaviour
 {
     private float curTimeout;
-    public float fireRate = 0.1f;
-    public Rigidbody2D bullet;
-    public Transform gunPoint;
-    public float speed;
+    
+    
 
 
     // Start is called before the first frame update
@@ -20,18 +18,10 @@ public class PlayerFire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0))
-		{
-			Fire();
-		}
-		else
-		{
-			curTimeout = 100;
-		}
     }
 
-    void Fire(){
-
+    public void Fire(bool who, float curTimeout, Transform gunPoint, Rigidbody2D bullet, float speed, float fireRate){
+    if(who == true){
         curTimeout += Time.deltaTime;
 		if(curTimeout > fireRate)
 		{
@@ -39,6 +29,21 @@ public class PlayerFire : MonoBehaviour
 			Rigidbody2D clone = Instantiate(bullet, gunPoint.position, Quaternion.identity) as Rigidbody2D;
 			clone.velocity = transform.TransformDirection(gunPoint.up * speed);
 			clone.transform.up = gunPoint.up;
+            
+		}
+        
+    }
+    else{
+        curTimeout += Time.deltaTime;
+		if(curTimeout > fireRate)
+		{
+            curTimeout = 0;
+            speed = -speed;
+            Rigidbody2D clone = Instantiate(bullet, gunPoint.position, Quaternion.identity) as Rigidbody2D;
+		    clone.velocity = transform.TransformDirection(gunPoint.up * speed);
+		    clone.transform.up = gunPoint.up;
+            Debug.Log("СТРЕЛЯЮ");
+        }
 		}
     }
 }
